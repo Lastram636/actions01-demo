@@ -9,8 +9,20 @@ on:
   #schedule:
   #  -  cron: '*/5 * * * *'  # Runs every 5 minutes
   workflow_dispatch:
-    
- 
+    inputs:
+      customer:
+        description: 'Customer name'
+        required: true
+        default: 'Corp'
+        type: choice
+        options:
+          - 'Corp'
+          - 'SmallBiz'
+          - 'Startup'
+      operator_name:
+        description: 'Your name'
+        required: false
+        type: string
 
   # Allows you to run this workflow manually from the Actions tab
 
@@ -42,3 +54,11 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+      - name: Test input
+        run: |
+          echo "Customer name is: $CUSTOMER_NAME"
+          echo "Operator name is: $OPERATOR_NAME"
+        env:
+          CUSTOMER_NAME: ${{ github.event.inputs.customer }}
+          OPERATOR_NAME: ${{ github.event.inputs.operator_name }}
