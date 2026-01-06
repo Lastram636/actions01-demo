@@ -19,13 +19,13 @@ jobs:
             run: pwd
 
           - name: List files
-            run: ls -la
+            run: ls -R
 
             
           - name: Checkout repository
             uses: actions/checkout@v4
 
           - name: List files
-            run: ls -l
+            run: ls -R
 
         
