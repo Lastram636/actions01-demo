@@ -6,7 +6,19 @@ on:
 
 jobs:
     add_comment:
+        permissions: 
+            issues: write
         runs-on: ubuntu-latest
         steps:
             - name: Debug event payload
               run: echo "${{ toJson(github.event) }}"
+    
+        
+            - name: Add comment to new issue
+              run: |
+                COMMENT_ID=$(gh issue comment $ISSUE  --body "Issue opened" --repo $REPO)
+                echo "Comment ID: $COMMENT_ID"
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                ISSUE: ${{ github.event.issue.number }}
+                REPO: ${{ github.event.repository.full_name }}
