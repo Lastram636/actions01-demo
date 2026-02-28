@@ -2,33 +2,30 @@ name: Auto-label-issue
 on: 
   issue_comment:
     types: [created]
-
 jobs:
- label:
-   permissions:
-     issues: write
-   runs-on: ubuntu-latest
-   steps:
-   - name: Change label to "auto-assigned"
-     if: startsWith(github.event.comment.body, '/assign')
-     run: |
-       gh issue edit $ISSUE --add-label "auto-assigned" --repo $REPO
-     env:
-       ISSUE: ${{ github.event.issue.number }}
-       REPO: ${{ github.event.repository.full_name }}
-       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-        
-   - name: Run Always
-     if: always()
-     run: echo "ALWAYS"
-   - name: Run after Failure
-     if: failure()
-     run: echo "FAILURE"
-   - name: Run after Success
-     if: success()
-     run: echo "SUCCESS"
-    second-job:
+  label:
+    permissions:
+      issues: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Change label to "auto-assigned"
+      if: startsWith(github.event.comment.body, '/assign')
+      run: |
+        gh issue edit $ISSUE --add-label "auto-assigned" --repo $REPO
+      env:
+        ISSUE: ${{ github.event.issue.number }}
+        REPO: ${{ github.event.repository.full_name }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Run Always
+      if: always()
+      run: echo "ALWAYS"
+    - name: Run after Failure
+      if: failure()
+      run: echo "FAILURE"
+    - name: Run after Success
+      if: success()
+      run: echo "SUCCESS"
+  second-job:
     runs-on: ubuntu-latest
     needs: label
     if: always()
